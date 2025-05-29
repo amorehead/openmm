@@ -247,8 +247,12 @@ class PdbxReader(object):
                         break
 
                     if curCatName != curCategory.getName():
-                        self.__syntaxError("Changed category name in loop_ declaration")
-                        return
+                        curCategory = DataCategory(curCatName)
+                        try:
+                            curContainer.append(curCategory)
+                        except AttributeError:
+                            self.__syntaxError("loop_ declaration outside of data_ block or save_ frame")
+                            return
 
                     curCategory.appendAttribute(curAttName)
 
